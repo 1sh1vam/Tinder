@@ -8,8 +8,6 @@ WebBrowser.maybeCompleteAuthSession();
 
 const AuthContext = createContext();
 
-console.log('clie', GOOGLE_WEB_CLIENT_ID)
-
 export const AuthProvider = ({ children }) => {
     const [request, response, promptAsync] = Google.useIdTokenAuthRequest(
         {
@@ -18,6 +16,7 @@ export const AuthProvider = ({ children }) => {
     );
 
     useEffect(() => {
+      console.log('inside the effects', response);
       if (response?.type === 'success') {
         const { id_token } = response.params;
         const auth = getAuth();
@@ -30,7 +29,7 @@ export const AuthProvider = ({ children }) => {
       promptAsync();
     }
     return (
-        <AuthContext.Provider value={{ signInWithGoogle, user: null }}>
+        <AuthContext.Provider value={{ request, signInWithGoogle, user: null }}>
             {children}
         </AuthContext.Provider>
     )
