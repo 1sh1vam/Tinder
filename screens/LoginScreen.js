@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { Button, View } from 'react-native'
+import React from 'react';
+import useAuth from '../hooks/useAuth';
 
 const LoginScreen = () => {
+  const { request, signInWithGoogle } = useAuth();
   return (
     <View>
-      <Text>LoginScreen</Text>
+      <Button disabled={!request} title="login" onPress={signInWithGoogle} />
     </View>
   )
 }
 
-export default LoginScreen
-
-const styles = StyleSheet.create({})
+export default LoginScreen;
