@@ -10,6 +10,7 @@ WebBrowser.maybeCompleteAuthSession();
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest(
@@ -17,6 +18,16 @@ export const AuthProvider = ({ children }) => {
         clientId: GOOGLE_WEB_CLIENT_ID,
       },
   );
+
+    useEffect(() => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          setUser(user);
+        } else {
+          setUser(null);
+        }
+      })
+    }, [])
 
     useEffect(() => {
       if (response?.type === 'success') {
@@ -35,7 +46,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ error, request, signInWithGoogle, user: auth.currentUser }}>
+        <AuthContext.Provider value={{ error, request, signInWithGoogle, user }}>
             {children}
         </AuthContext.Provider>
     )
