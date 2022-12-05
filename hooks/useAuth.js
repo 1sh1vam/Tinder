@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
-import { GoogleAuthProvider, onAuthStateChanged, signInWithCredential } from "firebase/auth";
+import { GoogleAuthProvider, onAuthStateChanged, signInWithCredential, signOut } from "firebase/auth";
 import { GOOGLE_WEB_CLIENT_ID } from '@env';
 import { auth } from "../lib/firebase";
 
@@ -45,8 +45,12 @@ export const AuthProvider = ({ children }) => {
       }
     }
 
+    const logout = async() => {
+      await signOut(auth);
+    }
+
     return (
-        <AuthContext.Provider value={{ error, request, signInWithGoogle, user }}>
+        <AuthContext.Provider value={{ error, request, signInWithGoogle, user, logout }}>
             {children}
         </AuthContext.Provider>
     )
