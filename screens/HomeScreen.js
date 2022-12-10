@@ -1,5 +1,5 @@
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useRef } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -38,6 +38,8 @@ const DUMMY_DATA = [
 const HomeScreen = () => {
   const { user, logout } = useAuth();
   const navigation = useNavigation();
+  const swipeRef = useRef(null);
+
   return (
     <SafeAreaView className="flex-1">
       {/* Header */}
@@ -58,6 +60,7 @@ const HomeScreen = () => {
         <Swiper
           containerStyle={{ backgroundColor: 'transparent' }}
           cards={DUMMY_DATA}
+          ref={swipeRef}
           cardVerticalMargin={0}
           stackSize={5}
           cardIndex={0}
@@ -99,10 +102,10 @@ const HomeScreen = () => {
       </View>
 
       <View className="w-full flex-row justify-evenly items-center">
-          <Button className="w-16 h-16 bg-red-200 items-center justify-center rounded-full">
+          <Button onPress={() => swipeRef.current.swipeLeft()} className="w-16 h-16 bg-red-200 items-center justify-center rounded-full">
             <Entypo name="cross" size={24} color="red" />
           </Button>
-          <Button className="w-16 h-16 bg-green-200 items-center justify-center rounded-full">
+          <Button onPress={() => swipeRef.current.swipeRight()} className="w-16 h-16 bg-green-200 items-center justify-center rounded-full">
             <AntDesign name="heart" size={24} color="green" />
           </Button>
       </View>
