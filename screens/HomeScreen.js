@@ -61,6 +61,26 @@ const HomeScreen = () => {
           cardIndex={0}
           verticalSwipe={false}
           animateCardOpacity
+          overlayLabels={{
+            right: {
+              title: 'Eww! Sorry😔',
+              style: {
+                label: {
+                  textAlign: 'left',
+                  color: 'red'
+                }
+              }
+            },
+            left: {
+              title: 'MATCH 😍',
+              style: {
+                label: {
+                  textAlign: 'right',
+                  color: 'green'
+                }
+              }
+            }
+          }}
           renderCard={(card) => (
             <View key={card.id} className="bg-white h-[60%] rounded-xl">
               <Image className="w-full h-full rounded-t-xl" source={{ uri: card.photoUrl }} />
