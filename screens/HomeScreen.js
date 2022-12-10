@@ -62,9 +62,9 @@ const HomeScreen = () => {
           verticalSwipe={false}
           animateCardOpacity
           renderCard={(card) => (
-            <View key={card.id} style={styles.cardShadow} className="bg-white h-3/4 rounded-xl">
+            <View key={card.id} className="bg-white h-[60%] rounded-xl">
               <Image className="w-full h-full rounded-t-xl" source={{ uri: card.photoUrl }} />
-              <View className="flex-row justify-between px-6 py-2 bg-white rounded-b-xl h-20">
+              <View style={styles.cardShadow} className="flex-row justify-between px-6 py-2 bg-white rounded-b-xl h-20">
                 <View>
                   <Text className="text-xl font-bold">{card.firstName} {card.lastName}</Text>
                   <Text>{card.occupation}</Text>
@@ -83,7 +83,7 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   cardShadow: {
-    shadowColor: 'red',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 1
