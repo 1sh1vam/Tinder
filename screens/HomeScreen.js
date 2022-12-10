@@ -1,6 +1,8 @@
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
+import Entypo from '@expo/vector-icons/Entypo';
+import AntDesign from '@expo/vector-icons/AntDesign';
 import Button from '../components/Button';
 import useAuth from '../hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
@@ -37,7 +39,7 @@ const HomeScreen = () => {
   const { user, logout } = useAuth();
   const navigation = useNavigation();
   return (
-    <SafeAreaView>
+    <SafeAreaView className="flex-1">
       {/* Header */}
       <View className="flex-row items-center justify-between px-5">
         <Button onPress={logout}>
@@ -94,6 +96,15 @@ const HomeScreen = () => {
             </View>
           )}
         />
+      </View>
+
+      <View className="w-full flex-row justify-evenly items-center">
+          <Button className="w-16 h-16 bg-red-200 items-center justify-center rounded-full">
+            <Entypo name="cross" size={24} color="red" />
+          </Button>
+          <Button className="w-16 h-16 bg-green-200 items-center justify-center rounded-full">
+            <AntDesign name="heart" size={24} color="green" />
+          </Button>
       </View>
     </SafeAreaView>
   )
