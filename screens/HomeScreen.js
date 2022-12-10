@@ -56,12 +56,13 @@ const HomeScreen = () => {
         <Swiper
           containerStyle={{ backgroundColor: 'transparent' }}
           cards={DUMMY_DATA}
+          cardVerticalMargin={0}
           stackSize={5}
           cardIndex={0}
           verticalSwipe={false}
           animateCardOpacity
           renderCard={(card) => (
-            <View key={card.id} style={[tw]} className="bg-white h-3/4 rounded-xl">
+            <View key={card.id} style={styles.cardShadow} className="bg-white h-3/4 rounded-xl">
               <Image className="w-full h-full rounded-t-xl" source={{ uri: card.photoUrl }} />
               <View className="flex-row justify-between px-6 py-2 bg-white rounded-b-xl h-20">
                 <View>
@@ -82,7 +83,7 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   cardShadow: {
-    shadowColor: '#000',
+    shadowColor: 'red',
     shadowOffset: {
       width: 0,
       height: 1
