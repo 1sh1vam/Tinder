@@ -47,7 +47,7 @@ const HomeScreen = () => {
         <Button onPress={logout}>
           <Image className="w-10 h-10 rounded-full" source={{ uri: user.photoURL }} />
         </Button>
-        <Button>
+        <Button onPress={() => navigation.navigate('Modal')}>
           <Image className="w-14 h-14 rounded-full" source={require('../assets/tinder-logo.png')} />
         </Button>
         <Button onPress={() => navigation.navigate('ChatScreen')}>

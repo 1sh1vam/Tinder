@@ -12,6 +12,4 @@ const Button = ({ children, ...props }) => {
   )
 }
 
-export default Button
-
-const styles = StyleSheet.create({})
+export default Button;
