@@ -1,5 +1,5 @@
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React, { useRef } from 'react'
+import React, { useLayoutEffect, useRef } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -7,6 +7,8 @@ import Button from '../components/Button';
 import useAuth from '../hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-deck-swiper';
+import { db } from '../lib/firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 const DUMMY_DATA = [
   {
@@ -39,6 +41,10 @@ const HomeScreen = () => {
   const { user, logout } = useAuth();
   const navigation = useNavigation();
   const swipeRef = useRef(null);
+
+  useLayoutEffect(() => onSnapshot(doc(db, 'users', user.uid), (snapshot) => {
+    if (!snapshot.exists()) navigation.navigate('Modal');
+  }), [])
 
   return (
     <SafeAreaView className="flex-1">
