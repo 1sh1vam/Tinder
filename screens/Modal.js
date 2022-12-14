@@ -2,12 +2,29 @@ import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, { useState } from 'react';
 import Button from '../components/Button';
 import useAuth from '../hooks/useAuth';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { db } from '../lib/firebase';
+import { useNavigation } from '@react-navigation/native';
 
 const Modal = () => {
   const { user } = useAuth();
+  const navigation = useNavigation();
   const [image, setImage] = useState(null);
   const [job, setJob] = useState(null);
   const [age, setAge] = useState(null);
+
+  const handleSubmit = async () => {
+    await setDoc(doc(db, 'users', user.uid), {
+      id: user.uid,
+      displayName: user.displayName,
+      email: user.email,
+      occupation: job,
+      age: age,
+      photoUrl: image,
+      timestamp: serverTimestamp(),
+    });
+    navigation.navigate('HomeScreen');
+  }
 
   const incompleteForm = !(image && job && age);
   return (
@@ -51,6 +68,7 @@ const Modal = () => {
       </View>
 
       <Button
+        onPress={handleSubmit}
         disabled={incompleteForm}
         className={`rounded-xl w-64 p-3 ${
           incompleteForm ? 'bg-gray-400' : 'bg-red-400'

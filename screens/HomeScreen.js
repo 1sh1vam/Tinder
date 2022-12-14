@@ -44,7 +44,7 @@ const HomeScreen = () => {
 
   useLayoutEffect(() => onSnapshot(doc(db, 'users', user.uid), (snapshot) => {
     if (!snapshot.exists()) navigation.navigate('Modal');
-  }), [])
+  }), []);
 
   return (
     <SafeAreaView className="flex-1">
