@@ -73,26 +73,26 @@ const HomeScreen = () => {
           verticalSwipe={false}
           animateCardOpacity
           overlayLabels={{
-            right: {
+            left: {
               title: 'Eww! Sorry😔',
               style: {
                 label: {
-                  textAlign: 'left',
+                  textAlign: 'right',
                   color: 'red'
                 }
               }
             },
-            left: {
+            right: {
               title: 'MATCH 😍',
               style: {
                 label: {
-                  textAlign: 'right',
+                  textAlign: 'left',
                   color: 'green'
                 }
               }
             }
           }}
-          renderCard={(card) => (
+          renderCard={(card) => card ? (
             <View key={card.id} className="bg-white h-[60%] rounded-xl">
               <Image className="w-full h-full rounded-t-xl" source={{ uri: card.photoUrl }} />
               <View style={styles.cardShadow} className="flex-row justify-between px-6 py-2 bg-white rounded-b-xl h-20">
@@ -102,6 +102,11 @@ const HomeScreen = () => {
                 </View>
                 <Text className="text-2xl font-bold">{card.age}</Text>
               </View>
+            </View>
+          ) : (
+            <View className="bg-white h-[60%] rounded-xl justify-center items-center">
+              <Text className="font-bold mb-5">No more profiles</Text>
+              <Image className="w-[20] h-[20]" source={{ uri: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Femojipedia.org%2Fpensive-face%2F&psig=AOvVaw3whnWJnzE3NsHfaN8Sei5k&ust=1671114308357000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCIi1wYeo-fsCFQAAAAAdAAAAABAF' }} />
             </View>
           )}
         />
