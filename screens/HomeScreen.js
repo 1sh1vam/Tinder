@@ -54,8 +54,9 @@ const HomeScreen = () => {
     const fetchCards = async () => {
       const passesSnap = await getDocs(collection(db, 'users', user.uid, 'passes'));
       const passesIds = passesSnap.empty ? ['test'] : passesSnap.docs.map((document) => document.id);
-      console.log(passesIds);
-      unsub = onSnapshot(query(collection(db, 'users'), where('id', 'not-in', passesIds)), snapshot => {
+      const swipedSnap = await getDocs(collection(db, 'users', user.uid, 'swipes'));
+      const swipedIds = swipedSnap.empty ? ['test'] : swipedSnap.docs.map((document) => document.id);
+      unsub = onSnapshot(query(collection(db, 'users'), where('id', 'not-in', [ ...passesIds, ...swipedIds ])), snapshot => {
         setProfiles(snapshot.docs.filter(doc => doc.id !== user.uid).map((doc) => ({ ...doc.data() })))
       })
     }
