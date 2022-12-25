@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-deck-swiper';
 import { db } from '../lib/firebase';
 import { doc, onSnapshot } from 'firebase/firestore';
+import { androidSafeArea } from '../styles/common-styles';
 
 const DUMMY_DATA = [
   {
@@ -47,7 +48,7 @@ const HomeScreen = () => {
   }), []);
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView style={androidSafeArea} className="flex-1">
       {/* Header */}
       <View className="flex-row items-center justify-between px-5">
         <Button onPress={logout}>
@@ -104,7 +105,7 @@ const HomeScreen = () => {
               </View>
             </View>
           ) : (
-            <View className="bg-white h-[60%] rounded-xl justify-center items-center">
+            <View style={styles.cardShadow} className="bg-white h-[60%] rounded-xl justify-center items-center">
               <Text className="font-bold mb-5">No more profiles</Text>
               <Image className="w-20 h-20" source={{ uri: 'https://www.cambridge.org/elt/blog/wp-content/uploads/2019/07/Sad-Face-Emoji.png.webp' }} />
             </View>

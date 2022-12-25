@@ -1,10 +1,11 @@
-import { Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native';
 import React, { useState } from 'react';
 import Button from '../components/Button';
 import useAuth from '../hooks/useAuth';
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useNavigation } from '@react-navigation/native';
+import { androidSafeArea } from '../styles/common-styles';
 
 const Modal = () => {
   const { user } = useAuth();
@@ -28,7 +29,7 @@ const Modal = () => {
 
   const incompleteForm = !(image && job && age);
   return (
-    <View className="flex-1 items-center justify-between pb-10">
+    <SafeAreaView style={androidSafeArea} className="flex-1 items-center justify-between pb-10">
       <View>
         <Image
           className="w-[200px] h-[100px]"
@@ -78,7 +79,7 @@ const Modal = () => {
           Update Profile
         </Text>
       </Button>
-    </View>
+    </SafeAreaView>
   );
 };
 
