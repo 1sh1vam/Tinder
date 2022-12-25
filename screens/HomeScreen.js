@@ -1,5 +1,5 @@
 import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -8,7 +8,7 @@ import useAuth from '../hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-deck-swiper';
 import { db } from '../lib/firebase';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { androidSafeArea } from '../styles/common-styles';
 
 const DUMMY_DATA = [
@@ -41,11 +41,26 @@ const DUMMY_DATA = [
 const HomeScreen = () => {
   const { user, logout } = useAuth();
   const navigation = useNavigation();
+  const [profiles, setProfiles] = useState([]);
   const swipeRef = useRef(null);
 
   useLayoutEffect(() => onSnapshot(doc(db, 'users', user.uid), (snapshot) => {
     if (!snapshot.exists()) navigation.navigate('Modal');
   }), []);
+
+  useEffect(() => {
+    let unsub;
+
+    const fetchCards = async () => {
+      unsub = onSnapshot(collection(db, 'users'), snapshot => {
+        setProfiles(snapshot.docs.filter(doc => doc.id !== user.uid).map((doc) => ({ ...doc.data() })))
+      })
+    }
+
+    fetchCards();
+
+    return unsub;
+  }, []);
 
   return (
     <SafeAreaView style={androidSafeArea} className="flex-1">
@@ -66,7 +81,7 @@ const HomeScreen = () => {
       <View className="flex-1 mt-6">
         <Swiper
           containerStyle={{ backgroundColor: 'transparent' }}
-          cards={DUMMY_DATA}
+          cards={profiles}
           ref={swipeRef}
           cardVerticalMargin={0}
           stackSize={5}
@@ -98,7 +113,7 @@ const HomeScreen = () => {
               <Image className="w-full h-full rounded-t-xl" source={{ uri: card.photoUrl }} />
               <View style={styles.cardShadow} className="flex-row justify-between px-6 py-2 bg-white rounded-b-xl h-20">
                 <View>
-                  <Text className="text-xl font-bold">{card.firstName} {card.lastName}</Text>
+                  <Text className="text-xl font-bold">{card.displayName}</Text>
                   <Text>{card.occupation}</Text>
                 </View>
                 <Text className="text-2xl font-bold">{card.age}</Text>
