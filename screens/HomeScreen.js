@@ -8,7 +8,7 @@ import useAuth from '../hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-deck-swiper';
 import { db } from '../lib/firebase';
-import { collection, doc, onSnapshot, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, where } from 'firebase/firestore';
 import { androidSafeArea } from '../styles/common-styles';
 
 const DUMMY_DATA = [
@@ -52,13 +52,15 @@ const HomeScreen = () => {
     let unsub;
 
     const fetchCards = async () => {
-      unsub = onSnapshot(collection(db, 'users'), snapshot => {
+      const passesSnap = await getDocs(collection(db, 'users', user.uid, 'passes'));
+      const passesIds = passesSnap.empty ? ['test'] : passesSnap.docs.map((document) => document.id);
+      console.log(passesIds);
+      unsub = onSnapshot(query(collection(db, 'users'), where('id', 'not-in', passesIds)), snapshot => {
         setProfiles(snapshot.docs.filter(doc => doc.id !== user.uid).map((doc) => ({ ...doc.data() })))
       })
     }
 
     fetchCards();
-
     return unsub;
   }, []);
 
