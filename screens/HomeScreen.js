@@ -8,8 +8,9 @@ import useAuth from '../hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-deck-swiper';
 import { db } from '../lib/firebase';
-import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, onSnapshot, query, serverTimestamp, setDoc, where } from 'firebase/firestore';
 import { androidSafeArea } from '../styles/common-styles';
+import { generateIds } from '../lib/generateId';
 
 const DUMMY_DATA = [
   {
@@ -42,6 +43,7 @@ const HomeScreen = () => {
   const { user, logout } = useAuth();
   const navigation = useNavigation();
   const [profiles, setProfiles] = useState([]);
+  const [loggedInProfile, setLoggedInProfile] = useState({});
   const swipeRef = useRef(null);
 
   useLayoutEffect(() => onSnapshot(doc(db, 'users', user.uid), (snapshot) => {
@@ -57,7 +59,8 @@ const HomeScreen = () => {
       const swipedSnap = await getDocs(collection(db, 'users', user.uid, 'swipes'));
       const swipedIds = swipedSnap.empty ? ['test'] : swipedSnap.docs.map((document) => document.id);
       unsub = onSnapshot(query(collection(db, 'users'), where('id', 'not-in', [ ...passesIds, ...swipedIds ])), snapshot => {
-        setProfiles(snapshot.docs.filter(doc => doc.id !== user.uid).map((doc) => ({ ...doc.data() })))
+        setProfiles(snapshot.docs.filter(doc => doc.id !== user.uid).map((doc) => ({ ...doc.data() })));
+        setLoggedInProfile(snapshot.docs.find(doc => doc.id === user.uid).data());
       })
     }
 
@@ -78,7 +81,17 @@ const HomeScreen = () => {
 
     if (!userSwiped) return;
 
-    return setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped);
+    await setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped);
+
+    // Create a match
+    return setDoc(doc(db, 'matches', generateIds(user.uid, userSwiped.id)), {
+      users: {
+        [user.uid]: loggedInProfile,
+        [userSwiped.id]: userSwiped
+      },
+      userMatched: [user.uid, userSwiped.id],
+      timestamp: serverTimestamp(),
+    })
   }
 
   return (
