@@ -8,7 +8,7 @@ import useAuth from '../hooks/useAuth';
 import { useNavigation } from '@react-navigation/native';
 import Swiper from 'react-native-deck-swiper';
 import { db } from '../lib/firebase';
-import { collection, doc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, onSnapshot, setDoc } from 'firebase/firestore';
 import { androidSafeArea } from '../styles/common-styles';
 
 const DUMMY_DATA = [
@@ -62,6 +62,14 @@ const HomeScreen = () => {
     return unsub;
   }, []);
 
+  const swipeLeft = async (userIndex) => {
+    const userSwiped = profiles[userIndex];
+
+    if (!userSwiped) return;
+
+    return setDoc(doc(db, 'users', user.uid, 'passes', userSwiped.id), userSwiped);
+  }
+
   return (
     <SafeAreaView style={androidSafeArea} className="flex-1">
       {/* Header */}
@@ -84,6 +92,7 @@ const HomeScreen = () => {
           cards={profiles}
           ref={swipeRef}
           cardVerticalMargin={0}
+          onSwipedLeft={swipeLeft}
           stackSize={5}
           cardIndex={0}
           verticalSwipe={false}
