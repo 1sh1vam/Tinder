@@ -72,6 +72,14 @@ const HomeScreen = () => {
     return setDoc(doc(db, 'users', user.uid, 'passes', userSwiped.id), userSwiped);
   }
 
+  const swipeRight = async (userIndex) => {
+    const userSwiped = profiles[userIndex];
+
+    if (!userSwiped) return;
+
+    return setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped);
+  }
+
   return (
     <SafeAreaView style={androidSafeArea} className="flex-1">
       {/* Header */}
@@ -95,6 +103,7 @@ const HomeScreen = () => {
           ref={swipeRef}
           cardVerticalMargin={0}
           onSwipedLeft={swipeLeft}
+          onSwipedRight={swipeRight}
           stackSize={5}
           cardIndex={0}
           verticalSwipe={false}
