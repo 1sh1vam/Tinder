@@ -106,7 +106,7 @@ const HomeScreen = () => {
           ) : (
             <View className="bg-white h-[60%] rounded-xl justify-center items-center">
               <Text className="font-bold mb-5">No more profiles</Text>
-              <Image className="w-[20] h-[20]" source={{ uri: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Femojipedia.org%2Fpensive-face%2F&psig=AOvVaw3whnWJnzE3NsHfaN8Sei5k&ust=1671114308357000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCIi1wYeo-fsCFQAAAAAdAAAAABAF' }} />
+              <Image className="w-20 h-20" source={{ uri: 'https://www.cambridge.org/elt/blog/wp-content/uploads/2019/07/Sad-Face-Emoji.png.webp' }} />
             </View>
           )}
         />
