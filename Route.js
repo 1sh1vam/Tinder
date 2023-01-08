@@ -5,6 +5,7 @@ import './lib/firebase';
 import ChatScreen from './screens/ChatScreen';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
+import MatchedScreen from './screens/MatchedScreen';
 import Modal from './screens/Modal';
 
 const Stack = createNativeStackNavigator();
@@ -23,6 +24,9 @@ export default function Route() {
             </Stack.Group>
             <Stack.Group screenOptions={{ presentation: 'modal' }}>
               <Stack.Screen name="Modal" component={Modal} />
+            </Stack.Group>
+            <Stack.Group screenOptions={{ presentation: 'transparentModal' }}>
+              <Stack.Screen name="Match" component={MatchedScreen} />
             </Stack.Group>
             </>
           ) : (
