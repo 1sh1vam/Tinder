@@ -36,7 +36,7 @@ const MatchedScreen = () => {
 
         onPress={() => {
           navigation.goBack();
-          navigation.navigate('Chat');
+          navigation.navigate('ChatScreen');
         }}
         className="text-center bg-white m-5 px-10 py-6 mt-20 rounded-full"
       >
