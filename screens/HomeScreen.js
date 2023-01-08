@@ -81,17 +81,25 @@ const HomeScreen = () => {
 
     if (!userSwiped) return;
 
-    await setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped);
+    const swipedByUser = await getDoc(doc(db, 'users', userSwiped.id, 'swipes', user.uid));
 
-    // Create a match
-    return setDoc(doc(db, 'matches', generateIds(user.uid, userSwiped.id)), {
-      users: {
-        [user.uid]: loggedInProfile,
-        [userSwiped.id]: userSwiped
-      },
-      userMatched: [user.uid, userSwiped.id],
-      timestamp: serverTimestamp(),
-    })
+    if (swipedByUser.exists()) {
+      // Create a match
+      await setDoc(doc(db, 'matches', generateIds(user.uid, userSwiped.id)), {
+        users: {
+          [user.uid]: loggedInProfile,
+          [userSwiped.id]: userSwiped
+        },
+        userMatched: [user.uid, userSwiped.id],
+        timestamp: serverTimestamp(),
+      });
+      navigation.navigate('Match', {
+        loggedInProfile,
+        userSwiped
+      });
+    } else {
+      await setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped);
+    }
   }
 
   return (
