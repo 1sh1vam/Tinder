@@ -23,6 +23,7 @@ const ChatList = () => {
 
   return matches.length ? (
     <FlatList
+      className="h-full"
       data={matches}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => <ChatRow matchDetails={item} />}
