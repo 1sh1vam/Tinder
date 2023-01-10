@@ -15,7 +15,7 @@ const ChatRow = ({ matchDetails }) => {
 
   return (
     <Button
-      onPress={() => navigation.navigate('Message')}
+      onPress={() => navigation.navigate('Message', { matchDetails })}
       style={styles.cardShadow}
       className="flex-row items-center py-3 px-5 bg-white mx-3 my-1 rounded-lg"
     >
