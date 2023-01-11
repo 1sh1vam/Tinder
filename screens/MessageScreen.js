@@ -22,9 +22,18 @@ const MessageScreen = () => {
   const { matchDetails } = params;
 
   const [input, setInput] = useState('');
+  const [messages, setMessages] = useState([]);
   const matchedUser = getMatchedUserInfo(matchDetails.users, user.uid);
 
-
+  useEffect(() => onSnapshot(
+    query(
+      collection(db, 'matches', matchDetails.id, 'messages'),
+      orderBy('createdAt', 'desc')
+    ),
+    (snapshot) => {
+      setMessages(snapshot.docs.map((document) => ({ ...document.data(), id: document.id })))
+    }
+  ), [])
 
   const handleSendMessage = () => {
     if (!input) return;
