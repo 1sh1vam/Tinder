@@ -17,6 +17,7 @@ import Button from '../components/Button';
 import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import SenderMessage from '../components/SenderMessage';
+import ReceiverMessage from '../components/ReceiverMessage';
 
 const MessageScreen = () => {
   const { params } = useRoute();
@@ -60,7 +61,7 @@ const MessageScreen = () => {
           className="flex-1"
           data={messages}
           keyExtractor={(item) => item.id}
-          renderItem={({ item: message }) => message.uId === user.uid ? <SenderMessage {...message} /> : ''}
+          renderItem={({ item: message }) => message.uId === user.uid ? <SenderMessage {...message} /> : <ReceiverMessage {...message} />}
         />
         <View className="flex-row bg-white justify-between items-center border border-gray-200 px-5 py-2">
           <TextInput
