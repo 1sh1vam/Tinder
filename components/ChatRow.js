@@ -1,17 +1,31 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { getMatchedUserInfo } from '../lib/getMatchedUserInfo';
 import useAuth from '../hooks/useAuth';
 import Button from './Button';
 import { useNavigation } from '@react-navigation/native';
+import { collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 const ChatRow = ({ matchDetails }) => {
   const navigation = useNavigation();
   const { user } = useAuth();
+  const [message, setMessage] = useState('Say Hi!!');
   const matchedUser = useMemo(
     () => getMatchedUserInfo(matchDetails.users, user.uid),
     []
   );
+
+  useEffect(() => onSnapshot(
+    query(
+      collection(db, 'matches', matchDetails.id, 'messages'),
+      orderBy('createdAt', 'desc'),
+      limit(1)
+    ),
+    (snapshot) => {
+      setMessage(snapshot.docs[0]?.data().message || 'Say Hi!!')
+    }
+  ), [])
 
   return (
     <Button
@@ -25,7 +39,7 @@ const ChatRow = ({ matchDetails }) => {
       />
       <View>
         <Text className="text-lg font-bold">{matchedUser.displayName}</Text>
-        <Text>Say hi!!</Text>
+        <Text>{message}</Text>
       </View>
     </Button>
   );
