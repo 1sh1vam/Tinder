@@ -59,6 +59,7 @@ const MessageScreen = () => {
       >
         <FlatList
           className="flex-1"
+          inverted={-1}
           data={messages}
           keyExtractor={(item) => item.id}
           renderItem={({ item: message }) =>
