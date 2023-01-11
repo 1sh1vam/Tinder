@@ -43,7 +43,7 @@ const MessageScreen = () => {
     addDoc(collection(db, 'matches', matchDetails.id, 'messages'), {
       uId: user.uid,
       message: input,
-      photoUrl: user.photoURL,
+      photoUrl: matchDetails.users[user.uid].photoUrl,
       createdAt: serverTimestamp(),
     });
     setInput('');
@@ -61,7 +61,13 @@ const MessageScreen = () => {
           className="flex-1"
           data={messages}
           keyExtractor={(item) => item.id}
-          renderItem={({ item: message }) => message.uId === user.uid ? <SenderMessage {...message} /> : <ReceiverMessage {...message} />}
+          renderItem={({ item: message }) =>
+            message.uId === user.uid ? (
+              <SenderMessage {...message} />
+            ) : (
+              <ReceiverMessage {...message} />
+            )
+          }
         />
         <View className="flex-row bg-white justify-between items-center border border-gray-200 px-5 py-2">
           <TextInput
