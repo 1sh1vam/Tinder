@@ -1,6 +1,7 @@
 import {
   FlatList,
   KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -49,7 +50,11 @@ const MessageScreen = () => {
   return (
     <SafeAreaView className="pt-8 flex-1">
       <Header title={matchedUser.displayName} callEnabled />
-      <KeyboardAvoidingView className="flex-1" keyboardVerticalOffset={10}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="flex-1"
+        keyboardVerticalOffset={10}
+      >
         <FlatList
           className="flex-1"
           data={messages}
