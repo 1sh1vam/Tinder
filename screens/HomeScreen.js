@@ -97,9 +97,9 @@ const HomeScreen = () => {
         loggedInProfile,
         userSwiped
       });
-    } else {
-      await setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped);
     }
+
+    await setDoc(doc(db, 'users', user.uid, 'swipes', userSwiped.id), userSwiped);
   }
 
   return (
