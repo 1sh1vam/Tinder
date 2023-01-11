@@ -1,6 +1,6 @@
 import {
+  FlatList,
   KeyboardAvoidingView,
-  Platform,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -23,20 +23,30 @@ const MessageScreen = () => {
 
   const matchedUser = getMatchedUserInfo(matchDetails.users, user.uid);
 
+  const handleSendMessage = () => {
+    setInput('');
+  }
+
   return (
     <SafeAreaView className="pt-8 flex-1">
       <Header title={matchedUser.displayName} callEnabled />
-      <View className="flex-row bg-white justify-between items-center border border-gray-200 px-5 py-2">
-        <TextInput
-          placeholder="Send Message..."
-          className="text-lg h-10 w-9/12"
-          value={input}
-          onChange={setInput}
+      <KeyboardAvoidingView className="flex-1" keyboardVerticalOffset={10}>
+        <FlatList
+          className="flex-1"
         />
-        <Button>
-          <Text className="text-red-500 text-lg">Send</Text>
-        </Button>
-      </View>
+        <View className="flex-row bg-white justify-between items-center border border-gray-200 px-5 py-2">
+          <TextInput
+            placeholder="Send Message..."
+            className="text-lg h-10 w-9/12"
+            value={input}
+            onSubmitEditing={handleSendMessage}
+            onChange={setInput}
+          />
+          <Button onPress={handleSendMessage}>
+            <Text className="text-red-500 text-lg">Send</Text>
+          </Button>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
