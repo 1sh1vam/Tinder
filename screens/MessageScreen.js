@@ -49,6 +49,7 @@ const MessageScreen = () => {
     setInput('');
   }
 
+  const previousMessageByReceiver = (index) => messages[index+1]?.uId !== user.uId;
   return (
     <SafeAreaView className="pt-8 flex-1">
       <Header title={matchedUser.displayName} callEnabled />
@@ -62,11 +63,11 @@ const MessageScreen = () => {
           inverted={-1}
           data={messages}
           keyExtractor={(item) => item.id}
-          renderItem={({ item: message }) =>
+          renderItem={({ item: message, index }) =>
             message.uId === user.uid ? (
               <SenderMessage {...message} />
             ) : (
-              <ReceiverMessage {...message} />
+              <ReceiverMessage prevMsgByReceiver={previousMessageByReceiver(index)} {...message} />
             )
           }
         />
